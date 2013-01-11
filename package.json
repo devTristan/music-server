@@ -1,0 +1,24 @@
+{
+  "author": "Tristan Davies <npm@tristan.io> (http://tristan.io)",
+  "name": "music-server",
+  "description": "Music server",
+  "private": true,
+  "version": "0.0.1",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/devTristan/music-server.git"
+  },
+  "main": "./server",
+  "engines": {
+    "node": "~0.8.1"
+  },
+  "dependencies": {
+    "async": "*",
+    "express": "*",
+    "mongolian": "*",
+    "walk": "*",
+    "websocket.io": "*"
+  },
+  "devDependencies": {},
+  "contributors": []
+}
