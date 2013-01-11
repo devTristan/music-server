@@ -33,6 +33,9 @@ var makeLength = function(len){
 	return ((len[0]*60)+len[1])*60+len[2];
 };
 var makeBitrate = function(bitrate){
+	if (typeof bitrate == 'number') {
+		return bitrate/1000;
+	}
 	return bitrate.split(' ').shift()*1;
 };
 var makeTitle = function(track, filename){
@@ -73,7 +76,6 @@ var q = async.queue(function(task, next){
 				genre: data[i].Genre,
 				bitrate: makeBitrate(data[i].AudioBitrate || data[i].LameBitrate || '0'),
 				file: data[i].SourceFile
-//				disk: 
 			};
 			songs.update({file: data[i].SourceFile}, song, true);
 		}
@@ -98,44 +100,6 @@ walker.on("file", function(dir, stats, next){
 	}
 	
 	next();
-	
-	/*var stream = fs.createReadStream(file);
-	var parser = new musicmetadata(stream);
-	var data = {file: file};
-	parser.on('metadata', function(results){
-		data.track = results.track;
-		data.title = results.title;
-		data.artist = results.artist;
-		data.albumartist = results.albumartist;
-		data.album = results.album;
-		data.year = results.year;
-		data.genre = results.genre;
-		data.disk = results.disk;
-	});
-	parser.on('TLEN', function(len){
-		console.log(len);
-		data.len = len;
-	});
-	parser.on('thing', function(field, value){
-		console.log(field, value);
-		//data.len = len;
-	});
-	var timeout = setTimeout(function(){
-		errors.push(file);
-		stream.destroy();
-		next();
-	}, 500);
-	
-	parser.on('done', function(err){
-		clearTimeout(timeout);
-		stream.destroy();
-		//songs.update({file: file}, data, true);
-		next();
-		if (err) {
-			console.log(err);
-			errors.push(file);
-		}
-	});*/
 });
 
 walker.on('end', function(){
