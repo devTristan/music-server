@@ -66,7 +66,11 @@ var api = {
 				} else {
 					artistList.sort();
 					client.syncArtists(artistList);
-					callback && callback(true);
+					var out = [];
+					for (var i in artistList) {
+						out.push( client.known.artists[artistList[i]] );
+					}
+					callback && callback(out);
 				}
 			});
 		},
@@ -94,6 +98,23 @@ var api = {
 					}
 					songList = client.syncSongs(songList);
 					client.reply(songList) || callback(songList);
+				});
+		},
+		findSongs: function(client, songIDs, callback){
+			for (var i in songIDs) {
+				songIDs[i] = new ObjectId(songIDs[i]);
+			}
+			songs.find({ _id: {'$in': songIDs} })
+				.toArray(function(err, songList){
+					for (var i in songList) {
+						songList[i]._id = songList[i]._id.toString();
+						if (!songList[i].albumartist || songList[i].albumartist == songList[i].artist) {
+							delete songList[i].albumartist;
+						}
+						delete songList[i].file;
+					}
+					songList = client.syncSongs(songList);
+					client.reply() || callback();
 				});
 		},
 		sync: function(client, callback){
