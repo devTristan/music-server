@@ -11,7 +11,7 @@ var wsio = require('websocket.io');
 var app = express();
 var server = http.createServer(app);
 var ws = wsio.attach(server);
-server.listen(5776);
+server.listen(5775);
 
 app.get('/song/:id.:ext', function(req, res){
 	var songs = library.songs.find('id', req.params.id);
